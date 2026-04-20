@@ -8,33 +8,70 @@ const CartItem = ({ onContinueShopping }) => {
   const dispatch = useDispatch();
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
+  const calculateTotalAmount = (cart) => {
+    let total = 0; 
+    cart.forEach((item) => {
+        const { quantity, cost } = item;
+        const price = parseFloat(cost.substring(1));
+        total += price * quantity;
+    });
+
+    return total;
   };
 
   const handleContinueShopping = (e) => {
-   
+    onContinueShopping(e); 
   };
 
 
 
   const handleIncrement = (item) => {
+        dispatch(
+          updateQuantity({
+            id: item.id,
+            quantity: item.quantity + 1,
+          })
+        );
+      };
   };
 
   const handleDecrement = (item) => {
+
+  if (item.quantity > 1) {
+    dispatch(
+      updateQuantity({
+        id: item.id,
+        quantity: item.quantity - 1,
+      })
+    );
+  } else {
+    dispatch(removeItem(item.id));
+  }
    
   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item.id));
   };
+  
+
+  const handleCheckoutShopping = (e) => {
+    alert('Functionality to be added for future reference');
+  };
+  
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    const price = parseFloat(item.cost.substring(1)); // "$10.00" → 10
+  return price * item.quantity;
   };
 
   return (
     <div className="cart-container">
       <h2 style={{ color: 'black' }}>Total Cart Amount: ${calculateTotalAmount()}</h2>
+      <button onClick={handleContinueShopping}>
+        Continue Shopping
+        </button>
       <div>
         {cart.map(item => (
           <div className="cart-item" key={item.name}>
@@ -53,6 +90,7 @@ const CartItem = ({ onContinueShopping }) => {
           </div>
         ))}
       </div>
+      
       <div style={{ marginTop: '20px', color: 'black' }} className='total_cart_amount'></div>
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
