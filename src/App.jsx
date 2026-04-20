@@ -12,10 +12,6 @@ function App() {
     setShowProductList(true);
   };
 
-  const handleHomeClick = () => {
-    setShowProductList(false);
-  };
-
   return (
     <div className="app-container">
       <div className={`landing-page ${showProductList ? 'fade-out' : ''}`}>
@@ -37,13 +33,12 @@ function App() {
 
       </div>
       <div className={`product-list-container ${showProductList ? 'visible' : ''}`}>
-        <ProductList onHomeClick={handleHomeClick}/>
+        <ProductList />
       </div>
     </div>
   );
 }
 
 export default App;
-
 
 
